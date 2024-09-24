@@ -17,15 +17,20 @@ interface CustomContext extends Context {
 export const blogRouter = new Hono<{
   Bindings: { DATABASE_URL: string; JWT_SECRET: string };
 }>();
-
 blogRouter.use("/*", async (c: CustomContext, next) => {
   const authHeader = c.req.header("authorization") || "";
-  const user = await verify(authHeader, c.env.JWT_SECRET);
 
-  if (user) {
-    c.set("userId", user.id);
-    await next();
-  } else {
+  try {
+    const user = await verify(authHeader, c.env.JWT_SECRET);
+
+    if (user) {
+      c.set("userId", user.id);
+      await next();
+    } else {
+      c.status(403);
+      return c.json({ message: "You are not logged in" });
+    }
+  } catch (error) {
     c.status(403);
     return c.json({ message: "You are not logged in" });
   }
