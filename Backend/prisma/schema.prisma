@@ -14,6 +14,7 @@ model User {
   password String
   posts    Post[]
 }
+
 model Post {
   id        Int      @id @default(autoincrement()) 
   title     String
