@@ -4,13 +4,11 @@ import Quote from "../components/Quote";
 const Signup = () => {
   return (
     <div>
-      <div className="grid grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
         <div>
-          <Auth />
+          <Auth type="signup" />
         </div>
-        {/* 
-         md:invisible:- Put this in final code in the quote Tailwind classname */}
-        <div className="visible">
+        <div className="hidden lg:block">
           <Quote />
         </div>
       </div>
