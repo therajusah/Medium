@@ -1,41 +1,44 @@
+import { Appbar } from "../components/Appbar";
 import BlogCard from "../components/BlogCard";
+import { useBlogs } from "../hooks";
+
+interface Post {
+  content: string;
+  title: string;
+  id: number;
+  author: {
+    name: string | null; 
+  };
+}
 
 const Blogs = () => {
+  const { loading, blogs, error } = useBlogs();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>; 
+  }
+
   return (
-    <div className="flex justify-center">
-      <div className="max-w-xl">
-        <BlogCard
-          authorName={"Raju Kumar"}
-          title={
-            "10 Things Software Developers Should Buy on Amazon Prime Big Deal Days 2024"
-          }
-          content={
-            "Hello guys! Amazon’s second Prime Day is here, and it’s the perfect opportunity to upgrade your developer toolkit without breaking the bank. Apart from Black Fridays and Cyber Monday, this is one event I always wait for to shop for the things I love."
-          }
-          publishedDate={"10 Sept. 2024"}
-        />
-         <BlogCard
-          authorName={"Raju Kumar"}
-          title={
-            "10 Things Software Developers Should Buy on Amazon Prime Big Deal Days 2024"
-          }
-          content={
-            "Hello guys! Amazon’s second Prime Day is here, and it’s the perfect opportunity to upgrade your developer toolkit without breaking the bank. Apart from Black Fridays and Cyber Monday, this is one event I always wait for to shop for the things I love."
-          }
-          publishedDate={"10 Sept. 2024"}
-        />
-         <BlogCard
-          authorName={"Raju Kumar"}
-          title={
-            "10 Things Software Developers Should Buy on Amazon Prime Big Deal Days 2024"
-          }
-          content={
-            "Hello guys! Amazon’s second Prime Day is here, and it’s the perfect opportunity to upgrade your developer toolkit without breaking the bank. Apart from Black Fridays and Cyber Monday, this is one event I always wait for to shop for the things I love."
-          }
-          publishedDate={"10 Sept. 2024"}
-        />
+    <div>
+      <Appbar />
+      <div className="flex justify-center">
+        <div>
+          {blogs.map((post: Post) => (
+            <BlogCard
+              key={post.id} 
+              id={post.id}
+              authorName={post.author?.name || "Anonymous"}
+              title={post.title}
+              content={post.content}
+              publishedDate={"10 Sept. 2024"} 
+            />
+          ))}
+        </div>
       </div>
-      
     </div>
   );
 };

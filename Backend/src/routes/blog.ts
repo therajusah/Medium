@@ -106,18 +106,29 @@ blogRouter.get("/post/:id", async (c: CustomContext) => {
   }
 });
 
-// Fetch all posts
-blogRouter.get("/posts", async (c: CustomContext) => {
+// Fetch all post
+blogRouter.get("/post", async (c: CustomContext) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
   try {
-    const posts = await prisma.post.findMany();
-    return c.json({ posts });
+    const post = await prisma.post.findMany({
+      select: {
+        content: true,
+        title: true,
+        id: true,
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    return c.json({ post });
   } catch (error) {
     console.error(error);
     c.status(500);
-    return c.json({ message: "Error fetching posts" });
+    return c.json({ message: "Error fetching post" });
   }
 });

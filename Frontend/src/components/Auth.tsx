@@ -23,7 +23,7 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
           password: postInputs.password,
         }
       );
-      const jwt = response.data;
+      const jwt = response.data.jwt;
       localStorage.setItem("token", jwt);
       setRedirect(true);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
